@@ -3,9 +3,11 @@ import LPHow from './LP_how_it_works'
 import Members from "./LP_members";
 import LPWhat from "./LP_what";
 
+import { landingPage } from '../../sass/LP.module.scss'
+
 const LP = () => {
     return (
-        <div className="landing-page">
+        <div className={landingPage}>
             <LPMain />
             <LPWhat />
             <LPHow />
