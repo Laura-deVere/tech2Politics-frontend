@@ -1,0 +1,22 @@
+@import "./variable.scss";
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 48px 0;
+  span {
+    font-size: $headerLarge;
+    font-weight: bold;
+    color: $purple;
+  }
+  li a {
+    color: $dark;
+  }
+}
+
+.copyright {
+  font-weight: $normal;
+  font-size: $copySmall;
+  color: $dark;
+}

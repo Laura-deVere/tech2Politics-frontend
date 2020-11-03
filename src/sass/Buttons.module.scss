@@ -1,0 +1,22 @@
+@import "./variable.scss";
+
+.button {
+  padding: 0.5em 0.7em;
+  margin: 0;
+  text-align: center;
+  border-radius: 7px;
+  font-size: $copyMedium;
+  font-weight: $medium;
+  &__primary {
+    background-color: $pink;
+    border: 1px solid $pink;
+    background-color: $yellow;
+    border: 1px solid $yellow;
+    color: $dark;
+  }
+  &__secondary {
+    background-color: $offwhite;
+    border: 1px solid $offwhite;
+    color: $pink;
+  }
+}

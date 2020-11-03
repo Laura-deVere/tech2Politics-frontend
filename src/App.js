@@ -1,9 +1,15 @@
-// import React from 'react';
+import Nav from './Components/Nav';
+import LP from "./Components/LP/LP";
+import Footer from './Components/Footer';
+
+import './App.scss';
 
 const App = () => {
   return (
     <div className="App">
-      <h1>Hello</h1>
+      <Nav />
+      <LP />
+      <Footer />
     </div>
   );
 }
