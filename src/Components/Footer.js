@@ -1,10 +1,11 @@
+import { Link } from 'react-router-dom';
 import { footer, copyright } from '../sass/Footer.module.scss'
 
 const Footer = () => {
     return (
         <footer className={footer}>
             <div>
-                <span>Tech2Politics</span>
+                <span><Link to="/">Tech2Politics</Link></span>
                 <ul>
                     <li><a href="#">About</a></li>
                     <li><a href="#">Mission</a></li>

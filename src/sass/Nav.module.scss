@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: transparent;
+  background-color: $dark;
   position: fixed;
   left: 0;
   right: 0;
@@ -17,6 +17,9 @@
     margin: 0 1em;
     font-weight: $medium;
     font-size: $headerSmall;
+    a {
+      color: $offwhite;
+    }
   }
   ul {
     display: flex;
