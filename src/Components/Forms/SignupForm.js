@@ -1,7 +1,10 @@
 import React from 'react';
-import { useFormik } from 'formik';
-import { signup } from '../../sass/Form.module.scss';
-
+import { Form, Field, FieldArray, Formik } from 'formik';
+import Dropdown from '../Dropdown';
+import Button from '../Button';
+import {expertiseList} from '../mockData';
+import { form, signup, formDetailField, formErrorField, formButtons } from '../../sass/Form.module.scss';
+ 
 const validate = values => {
     const errors = {};
     const numberRegex = new RegExp('^\\d+$');
@@ -37,39 +40,117 @@ const validate = values => {
 }
 
 const SignupForm = () => {
-    const formik = useFormik({
-        initialValues: {
+    // const formik = useFormik({
+    //     initialValues: {
+    //         email: '',
+    //         firstName: '',
+    //         lastName: '',
+    //         website: '',
+    //         linkedin: '',
+    //         summary: '',
+    //         expertise: []
+    //     },
+    //     validate,
+    //     onSubmit: values => {
+    //         alert.JSON.stringify(values, null, 2);
+    //     }
+    // });
+ 
+    return (
+        <>
+        <Formik
+            initialValues={{
             email: '',
             firstName: '',
             lastName: '',
-            summary: ''
-        },
-        validate,
-        onSubmit: values => {
-            alert.JSON.stringify(values, null, 2);
-        }
-    });
+            website: '',
+            linkedin: '',
+            summary: '',
+            expertise: []
+            }}            
+            onSubmit={values => alert(JSON.stringify(values, null, 2))}   
+        >
+            {({ errors, touched }) => (
+                        <Form className={`${form} ${signup}`}>
+            <h1>Join Tech2Politics</h1>
 
-    return (
-        <form onSubmit={formik.handleSubmit} className={signup}>
-            {formik.touched.firstName && formik.errors.firstName ? <div>{formik.errors.firstName}</div> : null}
-            <label htmlFor="firstName">First Name</label>
-            <input id="firstName" name="firstName" type="text" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.firstName} />
+            <div className={formDetailField}>
+                {touched.firstName && errors.firstName ? <div className={formErrorField}>{errors.firstName}</div> : null}
+                <label htmlFor="firstName">First Name</label>
+                <Field id="firstName" name="firstName" type="text" validate={validate} />
+            </div>
 
-            {formik.touched.lastName && formik.errors.lastName ? <div>{formik.errors.lastName}</div> : null}
-            <label htmlFor="lastName">Last Name</label>
-            <input id="lastName" name="lastName" type="text" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.lastName}/>
+            <div className={formDetailField}>
+                {touched.lastName && errors.lastName ? <div className={formErrorField}>{errors.lastName}</div> : null}
+                <label htmlFor="lastName">Last Name</label>
+                <Field id="lastName" name="lastName" type="text" validate={validate}/>
+            </div>
 
-            {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
-            <label htmlFor="email">Email Address</label>
-            <input id="email" name="email" type="email" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.email} />
+            <div className={formDetailField}>
+                {touched.email && errors.email ? <div className={formErrorField}>{errors.email}</div> : null}
+                <label htmlFor="email">Email Address</label>
+                <Field id="email" name="email" type="email" validate={validate} />
+            </div>
 
-            {formik.touched.summary && formik.errors.summary ? <div>{formik.errors.summary}</div> : null}
-            <label htmlFor="summary">Summary</label>
-            <input id="summary" name="summary" type="textarea" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.summary} />
+            <div className={formDetailField}>
+                {touched.location && errors.location ? <div className={formErrorField}>{errors.location}</div> : null}
+                <label htmlFor="location">Location</label>
+                <Field id="location" name="location" type="location" validate={validate} />
+            </div>
 
-            <button type="submit">Submit</button>
-        </form>
+            <div className={formDetailField}>
+                {touched.website && errors.website ? <div className={formErrorField}>{errors.website}</div> : null}
+                <label htmlFor="website">Website</label>
+                <Field id="website" name="website" type="website" validate={validate} />
+            </div>
+
+            <div className={formDetailField}>
+                {touched.linkedin && errors.linkedin ? <div className={formErrorField}>{errors.linkedin}</div> : null}
+                <label htmlFor="linkedin">Linkedin</label>
+                <Field id="linkedin" name="linkedin" type="text" validate={validate} />
+            </div>
+
+            <div className={formDetailField}>
+                {touched.summary && errors.summary ? <div className={formErrorField}>{errors.summary}</div> : null}
+                <label htmlFor="summary">Summary</label>
+                <Field id="summary" name="summary" type="text" validate={validate} cols="30" rows="10" />
+            </div>
+
+            <div className={formDetailField}>
+                <FieldArray 
+                    name="expertise" 
+                    render={({ insert, remove, push }) => {
+                        // {expertise.length > 0 && expertise.map((domain, index) => (
+                            <div key={index}>
+                                {/* <label htmlFor={}></label> */}
+                                 <Field
+                                    name={values.expertise[index]}
+                                    placholder="Input"
+                                    type="text"
+                                />
+                            </div>
+                        // ))}
+                    }}
+                /> 
+
+
+
+                {/* {touched.expertise && errors.expertise ? <div className={formErrorField}>{errors.expertise}</div> : null}
+                <label htmlFor="expertise">Expertise</label>
+                <input id="expertise" name="expertise" type="text" onChange={handleChange} onBlur={handleBlur} /> */}
+                <Dropdown listOptions={expertiseList} />
+            </div>
+
+            <div className={formButtons}>
+                <Button type="submit" text="Submit" />
+                <Button text="Reset" onClickHandler={null}/>
+            </div>
+        </Form>
+            )}
+        
+
+        </Formik>
+        </>
     )
 }
 

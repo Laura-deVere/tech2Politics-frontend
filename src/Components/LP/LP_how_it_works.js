@@ -5,7 +5,7 @@ import { lphow } from '../../sass/LP.module.scss';
 const LPHow = () => {
     return (
         <section className={lphow}>
-            <img src={img} alt='image needs alt text' />
+            <img src={img} alt='needs alt text' />
             <div>
                 <div>
                     <h2>
