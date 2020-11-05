@@ -116,30 +116,7 @@ const SignupForm = () => {
                 <Field id="summary" name="summary" type="text" validate={validate} cols="30" rows="10" />
             </div>
 
-            <div className={formDetailField}>
-                <FieldArray 
-                    name="expertise" 
-                    render={({ insert, remove, push }) => {
-                        // {expertise.length > 0 && expertise.map((domain, index) => (
-                            <div key={index}>
-                                {/* <label htmlFor={}></label> */}
-                                 <Field
-                                    name={values.expertise[index]}
-                                    placholder="Input"
-                                    type="text"
-                                />
-                            </div>
-                        // ))}
-                    }}
-                /> 
-
-
-
-                {/* {touched.expertise && errors.expertise ? <div className={formErrorField}>{errors.expertise}</div> : null}
-                <label htmlFor="expertise">Expertise</label>
-                <input id="expertise" name="expertise" type="text" onChange={handleChange} onBlur={handleBlur} /> */}
-                <Dropdown listOptions={expertiseList} />
-            </div>
+            
 
             <div className={formButtons}>
                 <Button type="submit" text="Submit" />
