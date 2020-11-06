@@ -78,8 +78,6 @@ const SignupForm = () => {
             // onSubmit={values => alert(JSON.stringify(values, null, 2))}   
         >
             {({ errors, touched, values, resetForm }) => {
-                console.log(errors)
-                console.log(touched)
                 return (
 
             <Form className={`${form} ${signup}`}>

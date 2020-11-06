@@ -7,6 +7,7 @@ import {
 import Nav from './Components/Nav';
 import LP from "./Components/LP/LP";
 import SignupForm  from './Components/Forms/SignupForm';
+import SigninForm  from './Components/Forms/SigninForm';
 import Footer from './Components/Footer';
 
 import './App.scss';
@@ -17,6 +18,9 @@ const App = () => {
       <Router>
       <Nav />
         <Switch>
+          <Route path="/signin">
+            <SigninForm />
+          </Route>
           <Route path="/signup">
             <SignupForm />
           </Route>

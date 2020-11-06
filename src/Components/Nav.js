@@ -14,7 +14,11 @@ const Nav = () => {
                         <Button text={'JOIN NOW'} />
                     </Link>
                 </li>    
-                <li><Button text={'SIGN IN'} /></li>
+                <li>
+                    <Link to="/signin">
+                        <Button text={'SIGN IN'} />
+                    </Link>
+                </li>
             </ul>
         </nav>
     )

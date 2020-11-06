@@ -34,7 +34,8 @@
   a {
     color: $dark;
   }
-  li:hover {
+  li:hover,
+  li:focus-within {
     background-color: $pink;
   }
 }

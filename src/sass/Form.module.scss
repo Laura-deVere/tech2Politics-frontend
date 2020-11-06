@@ -65,7 +65,8 @@
   font-style: italic;
 }
 
-.signup {
+.signup,
+.signin {
   width: 80%;
   h1 {
     color: $pink;
@@ -91,6 +92,7 @@
     color: #fff;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
+    font-size: $copySmall;
   }
   button {
     background-color: $pink;
