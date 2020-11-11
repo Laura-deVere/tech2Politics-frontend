@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // import { Auth0Provider } from '@auth0/auth0-react';
+=======
+>>>>>>> ebda88406b3a5efb2e77d8e164d20287081a6239
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -6,7 +9,11 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
+<<<<<<< HEAD
         <App />
+=======
+    <App />
+>>>>>>> ebda88406b3a5efb2e77d8e164d20287081a6239
   </React.StrictMode>,
   document.getElementById('root')
 );
