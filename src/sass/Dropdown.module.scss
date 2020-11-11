@@ -1,0 +1,41 @@
+@import "./variable.scss";
+.dropdown {
+  ul {
+    overflow: scroll;
+    max-width: 100%;
+    height: 200px;
+    border: 1px solid #d5dae2;
+    border-radius: 4px;
+    margin-top: 0;
+  }
+  button {
+    width: 100%;
+    border: 1px solid #d5dae2;
+    color: $dark;
+    margin-bottom: 0;
+    justify-content: space-between;
+  }
+  li,
+  button {
+    background-color: #fff;
+    height: 51px;
+    display: flex;
+    align-items: center;
+    transition: all 0.1s ease 0s;
+    padding: 0px 20px;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: $dark;
+    vertical-align: top;
+    text-align: right;
+  }
+  a {
+    color: $dark;
+  }
+  li:hover,
+  li:focus-within {
+    background-color: $pink;
+  }
+}
