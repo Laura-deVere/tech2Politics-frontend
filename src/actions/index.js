@@ -1,4 +1,4 @@
-import { SIGN_UP, SIGN_IN, SIGN_OUT } from './types';
+import { SIGN_UP, SIGN_IN, SIGN_OUT, ERROR } from './types';
 import axios from '../apis/user';
 
 export const signUp = (newUser) => async (dispatch) => {
@@ -12,6 +12,7 @@ export const signUp = (newUser) => async (dispatch) => {
                 password: newUser.password,
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
+                location: newUser.location,
                 website: newUser.website,
                 linkedin: newUser.linkedin,
                 summary: newUser.summary,
@@ -30,6 +31,7 @@ export const signUp = (newUser) => async (dispatch) => {
 }
 
 export const signIn = (email, password) => async (dispatch) => {
+    let success;
     // /do a sign in thing
     const options = {
         method: "POST",
@@ -45,10 +47,40 @@ export const signIn = (email, password) => async (dispatch) => {
         .then((res) => {
             console.log(res)
             localStorage.setItem('token', res.data.token)
+            success = true;
             dispatch({
                 type: SIGN_IN,
                 payload: res.data.user
+            });
+        })
+        .catch((err) => {
+            console.log(err.response);
+            success = false;
+            dispatch({
+                type: ERROR,
+                payload: { message: err.response.data }
+            });
+        });
+    return success;    
+}
+
+export const signOut = (email) => async (dispatch) => {
+    const options = {
+        method: 'GET',
+        withCredentials: true,
+        url: '/logout',
+        data: {
+            username: email
+        }
+    }
+
+    await axios(options)
+        .then((res) => {
+            localStorage.removeItem('token');
+            dispatch({
+                type: SIGN_OUT,
+                payload: null
             })
         })
-    return true;
+        .catch((err) => console.log(err))
 }

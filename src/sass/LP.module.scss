@@ -229,6 +229,10 @@
     width: 220px;
     height: 220px;
     margin-right: 10px;
+    p {
+      font-size: $copyMedium;
+      font-weight: $normal;
+    }
   }
   .lphow {
     p {

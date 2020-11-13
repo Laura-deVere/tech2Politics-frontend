@@ -84,6 +84,7 @@ const SignupForm = ({ signUp }) => {
                                 password: '',
                                 firstName: '',
                                 lastName: '',
+                                location: '',
                                 website: '',
                                 linkedin: '',
                                 summary: '',
@@ -96,7 +97,7 @@ const SignupForm = ({ signUp }) => {
                                 return (
                                     <Form onSubmit={handleSubmit} className={`${form} ${signup}`} >
                                         <h1>Join Tech2Politics</h1>
-                                                        
+                                        <div>                
                                         <div className={formDetailField}>
                                             {touched.firstName && errors.firstName ? <div className={formErrorField}>{errors.firstName}</div> : null}
                                             <label htmlFor="firstName">First Name</label>
@@ -139,7 +140,8 @@ const SignupForm = ({ signUp }) => {
                                             <label htmlFor="linkedin">Linkedin</label>
                                             <Field id="linkedin" name="linkedin" type="text"  />
                                         </div>
-
+                                        </div> 
+                                        <div>
                                         <div className={formDetailField}>
                                             {touched.summary && errors.summary ? <div className={formErrorField}>{errors.summary}</div> : null}
                                             <label htmlFor="summary">Summary</label>
@@ -175,6 +177,7 @@ const SignupForm = ({ signUp }) => {
                                         <div className={formButtons}>
                                             <Button type="submit" text="Submit" />
                                             <Button type="button" text="Reset" onClickHandler={() => resetForm()}/>
+                                        </div>
                                         </div>
                                     </Form>
                             )}}

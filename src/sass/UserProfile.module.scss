@@ -1,0 +1,55 @@
+@import "./variable.scss";
+
+.userProfile {
+  width: 100%;
+  max-width: 1200px;
+  padding: 64px 0 100px 0;
+  margin: 0 auto;
+  background-color: $offwhite;
+  header {
+    max-width: 800px;
+    width: 80%;
+    margin: 100px auto;
+    a i {
+      font-size: $copyExtraLarge;
+      color: $pink;
+      margin-right: 1em;
+    }
+    p {
+      color: $dark;
+    }
+  }
+}
+
+.userName {
+  font-weight: $bold;
+  margin-bottom: 16px;
+}
+
+.userLocation {
+  font-weight: $medium;
+  margin-top: 0;
+}
+
+.expertiseList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  li {
+    background-color: $pink;
+    border: 1px solid $pink;
+    color: #fff;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    font-size: $copySmall;
+    padding: 10px 20px;
+    border-radius: 4px;
+    margin: 10px 10px 10px 0;
+    max-width: 100px;
+    min-height: 28px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+}

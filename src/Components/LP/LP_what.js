@@ -8,15 +8,15 @@ const LPWhat = () => {
             <h2>What we do</h2>
             <ul>
                 <li>
-                    <TextBoxSmall header={'SME (SUBJECT MATTER EXPERTS)'}
+                    <TextBoxSmall header={'SME (Subject matter experts)'}
                         copy={'Find the SME you are looking for when looking for information about the intersection of tech and politics'} />
                 </li>
                 <li>
-                    <TextBoxSmall header={'MEMBERSHIP'}
+                    <TextBoxSmall header={'Membership'}
                         copy={'Select from a list of consultants to address an issue at your local election office or organization'} />
                 </li>
                 <li>
-                    <TextBoxSmall header={'CONNECTING WOMXN TO RESOURCES TO RUN FOR OFFICE'}
+                    <TextBoxSmall header={'Connecting womxn to resources to run for office'}
                         copy={'Connect womxn with resoources and organizations'} />
                 </li>
             </ul>

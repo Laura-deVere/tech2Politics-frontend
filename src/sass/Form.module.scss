@@ -46,7 +46,7 @@
 .formDetailField {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1em;
+  margin-bottom: 2em;
   label {
     margin: 0.5em 0;
   }
@@ -106,5 +106,28 @@
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     padding: 1px 4px;
+  }
+}
+
+@media (min-width: 768px) {
+  .signin {
+    max-width: 40%;
+    height: 80vh;
+  }
+  .signup {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    h1 {
+      width: 100%;
+    }
+    > div {
+      width: 45%;
+    }
+    > div:nth-child(2) {
+      div {
+        width: 80%;
+      }
+    }
   }
 }

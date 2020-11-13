@@ -2,6 +2,7 @@ import { Form, Field, Formik } from 'formik';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signIn } from '../../actions';
+import ErrorMessage from '../ErrorMessage';
 import Button from '../Button';
 
 import { form, signin, formDetailField, formErrorField, formButtons } from '../../sass/Form.module.scss';
@@ -23,14 +24,18 @@ const validate = values => {
     return errors;
 }
 
-const SigninForm = ({signIn}) => {
+const SigninForm = ({errorMessage, signIn}) => {
     const [signInSuccess, setSignInSuccess] = useState(false);
+    const [signInError, setSignInError] = useState(false);
 
     const handleSigninFormSubmit = async (values) => {
         const success = await signIn(values.email, values.password);
         console.log(success)
         if(success) {
             setSignInSuccess(true);
+        } else {
+            setSignInError(true);
+            console.log(errorMessage)
         }
     }
 
@@ -51,7 +56,7 @@ const SigninForm = ({signIn}) => {
 
                                 <Form className={`${form} ${signin}`}>
                                     <h1>Sign In</h1>
-
+                                    {signInError ? <ErrorMessage message={errorMessage.message} /> : null}
                                     <div className={formDetailField}>
                                         {errors.email && touched.email ? <div className={formErrorField}>{errors.email}</div>:null}
                                         <Field type="email" id="email" name="email" />
@@ -76,4 +81,11 @@ const SigninForm = ({signIn}) => {
     )
 }
 
-export default connect(null, { signIn })(SigninForm);
+const mapStateToProps = (state) => {
+    console.log(state)
+    return {
+        errorMessage: state.error
+    }
+}
+
+export default connect(mapStateToProps, { signIn })(SigninForm);
