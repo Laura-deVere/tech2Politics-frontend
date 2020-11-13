@@ -5,6 +5,7 @@ import { signIn } from '../../actions';
 import Button from '../Button';
 
 import { form, signin, formDetailField, formErrorField, formButtons } from '../../sass/Form.module.scss';
+import { useState } from 'react';
 
 const validate = values => {
     const errors = {};
@@ -23,37 +24,54 @@ const validate = values => {
 }
 
 const SigninForm = ({signIn}) => {
+    const [signInSuccess, setSignInSuccess] = useState(false);
+
+    const handleSigninFormSubmit = async (values) => {
+        const success = await signIn(values.email, values.password);
+        console.log(success)
+        if(success) {
+            setSignInSuccess(true);
+        }
+    }
+
     return (
         <div>
-            <Formik
-                initialValues={{
-                    email: '',
-                    password: ''
-                }}
-                validate={validate}
-                onSubmit={values => signIn(values.email, values.password)}
-                >
-                {({ errors, touched }) => (
+            {
+                signInSuccess ? <Redirect to={'/user'} /> : (
 
-                    <Form className={`${form} ${signin}`}>
-                        <h1>Sign In</h1>
+                        <Formik
+                            initialValues={{
+                                email: '',
+                                password: ''
+                            }}
+                            validate={validate}
+                            onSubmit={values => handleSigninFormSubmit(values)}
+                            >
+                            {({ errors, touched }) => (
 
-                        <div className={formDetailField}>
-                            {errors.email && touched.email ? <div className={formErrorField}>{errors.email}</div>:null}
-                            <Field type="email" id="email" name="email" />
-                        </div>
+                                <Form className={`${form} ${signin}`}>
+                                    <h1>Sign In</h1>
 
-                        <div className={formDetailField}>
-                            {errors.password && touched.password ? <div className={formErrorField}>{errors.password}</div>:null}
-                            <Field type="password" id="password" name="password" />
-                        </div>
+                                    <div className={formDetailField}>
+                                        {errors.email && touched.email ? <div className={formErrorField}>{errors.email}</div>:null}
+                                        <Field type="email" id="email" name="email" />
+                                    </div>
 
-                        <div className={formButtons}>
-                            <Button type="submit" text="Submit" />
-                        </div>
-                    </Form>
-                )}
-            </Formik>
+                                    <div className={formDetailField}>
+                                        {errors.password && touched.password ? <div className={formErrorField}>{errors.password}</div>:null}
+                                        <Field type="password" id="password" name="password" />
+                                    </div>
+
+                                    <div className={formButtons}>
+                                        <Button type="submit" text="Submit" />
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+
+                )
+            }
+            
         </div>
     )
 }

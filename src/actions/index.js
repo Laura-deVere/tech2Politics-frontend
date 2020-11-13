@@ -44,14 +44,11 @@ export const signIn = (email, password) => async (dispatch) => {
     await axios(options)
         .then((res) => {
             console.log(res)
-            // dispatch({
-            //     type: SIGN_IN,
-            //     payload: 
-            // })
+            localStorage.setItem('token', res.data.token)
+            dispatch({
+                type: SIGN_IN,
+                payload: res.data.user
+            })
         })
-        .catch(err => console.log(err))
-//    dispatch({
-//        type: SIGN_IN,
-//        payload: user
-//    })
+    return true;
 }

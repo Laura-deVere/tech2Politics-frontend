@@ -1,16 +1,20 @@
+import { connect } from 'react-redux';
 import Avatar from "../Avatar"; 
 
-const UserProfile = () => {
+const UserProfile = ({user}) => {
+
     return (
         <section>
             <header>
                 <Avatar size="large" />
-                <h1>User Name</h1>
-                <p>User summary</p>
+                    <h1>{user.firstName} {user.lastName}</h1>
+                    <p>{user.summary}</p>
                 <div>
                     <h3>Expertise</h3>
                     <ul>
-                        <li></li>
+                        {user.expertise.map((item, index) => {
+                            return <li key={index}>{item}</li>
+                        })}
                     </ul>
                 </div>
             </header>
@@ -18,4 +22,10 @@ const UserProfile = () => {
     )
 }
 
-export default UserProfile;
+const mapStateToProps = state => {
+    return {
+        user: state.auth
+    }
+}
+
+export default connect(mapStateToProps)(UserProfile);
