@@ -4,6 +4,7 @@ import {
   Route
 } from 'react-router-dom';
 
+import PrivateRoute from './Components/PrivateRoute';
 import Nav from './Components/Nav';
 import LP from "./Components/LP/LP";
 import SignupForm  from './Components/Forms/SignupForm';
@@ -19,9 +20,9 @@ const App = () => {
       <Router>
       <Nav />
         <Switch>
-          <Route path="/user">
+          <PrivateRoute path="/user">
             <UserProfile />
-          </Route>
+          </PrivateRoute>
           <Route path="/signin">
             <SigninForm />
           </Route>

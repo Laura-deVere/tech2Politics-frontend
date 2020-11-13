@@ -1,4 +1,7 @@
 import { Form, Field, Formik } from 'formik';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { signIn } from '../../actions';
 import Button from '../Button';
 
 import { form, signin, formDetailField, formErrorField, formButtons } from '../../sass/Form.module.scss';
@@ -19,7 +22,7 @@ const validate = values => {
     return errors;
 }
 
-const SigninForm = () => {
+const SigninForm = ({signIn}) => {
     return (
         <div>
             <Formik
@@ -28,7 +31,7 @@ const SigninForm = () => {
                     password: ''
                 }}
                 validate={validate}
-                onSubmit={values => console.log(values)}
+                onSubmit={values => signIn(values.email, values.password)}
                 >
                 {({ errors, touched }) => (
 
@@ -55,4 +58,4 @@ const SigninForm = () => {
     )
 }
 
-export default SigninForm;
+export default connect(null, { signIn })(SigninForm);

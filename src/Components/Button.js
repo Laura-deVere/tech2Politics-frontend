@@ -1,7 +1,7 @@
-import { button, button__primary, button__secondary } from "../sass/Buttons.module.scss";
+import { button, button__primary } from "../sass/Buttons.module.scss";
 
 const Button = ({ text, type, onClickHandler }) => {
-    const btnClass = button__secondary;
+    // const btnClass = button__secondary;
     return (
         <button 
             onClick={(e) => {
