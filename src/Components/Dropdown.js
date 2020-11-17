@@ -12,8 +12,8 @@ const Dropdown = ({ listName, listOptions, onClickHandler, list}) => {
     }, [isOpen]);
 
     const validateExpertiseListLength = (listLength, onClickHandler, item) => {
-        if(list.length < 5 && !list.includes(item)) { 
-            onClickHandler(item)
+        if(list.length < 5 && !list.some(selected => selected._id === item._id)) { 
+            onClickHandler(item);
         }  else { return null }
     }
 
@@ -23,7 +23,7 @@ const Dropdown = ({ listName, listOptions, onClickHandler, list}) => {
             <li 
                 key={index} 
                 onClick={() => validateExpertiseListLength(list,onClickHandler,item)}>
-                <a href="#">{item}</a>
+                <a href="#">{item.name}</a>
             </li>)
         });
     }

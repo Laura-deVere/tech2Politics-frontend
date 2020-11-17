@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { signUp } from '../../actions'
+import { signUp, getExpertiseList } from '../../actions';
 import { Form, Field, FieldArray, Formik } from 'formik';
 import { Redirect } from 'react-router-dom';
 import Dropdown from '../Dropdown';
 import Button from '../Button';
-import { expertiseList } from '../mockData';
 import { form, signup, formDetailField, formErrorField, formButtons, expertiseListItem } from '../../sass/Form.module.scss';
  
 const validate = values => {
@@ -66,8 +65,12 @@ const validate = values => {
     return errors;
 }
 
-const SignupForm = ({ signUp }) => {
+const SignupForm = ({ signUp, getExpertiseList, expertiseList }) => {
     const [formIsSubmitted, setFormIsSubmitted] = useState(false);
+
+    useEffect(() => {
+        getExpertiseList()
+    },[]);
 
     const handleAxiosPostRequest = async (newUser) => {
         await signUp(newUser);
@@ -91,8 +94,9 @@ const SignupForm = ({ signUp }) => {
                                 expertise: []
                             }}      
                             validate={validate}   
-                            onSubmit={values => handleAxiosPostRequest(values)} 
+                            onSubmit={values => handleAxiosPostRequest(values)}
                         >
+                            
                             {({ errors, touched, values, resetForm, handleSubmit }) => {
                                 return (
                                     <Form onSubmit={handleSubmit} className={`${form} ${signup}`} >
@@ -159,7 +163,7 @@ const SignupForm = ({ signUp }) => {
                                                         values.expertise.map((item, index) => {
                                                             return (
                                                                 <div key={index} className={expertiseListItem}>
-                                                                    <Field name={`expertise[${index}]`} type="text"  value={values.expertise[index]} disabled/>
+                                                                    <Field name={`expertise[${index}]`} type="text"  value={values.expertise[index].name} disabled/>
                                                                     <button 
                                                                         type="button"
                                                                         onClick={() => remove(index)}>
@@ -189,4 +193,8 @@ const SignupForm = ({ signUp }) => {
     )
 }
 
-export default connect(null, {signUp})(SignupForm);
+const mapStateToProps = state => {
+    return { expertiseList: state.expertiseList }
+}
+
+export default connect(mapStateToProps, { signUp, getExpertiseList })(SignupForm);

@@ -1,10 +1,32 @@
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { getExpertiseList } from '../../actions';
 import Avatar from "../Avatar"; 
 
-import { userProfile, expertiseList, userLocation, userName } from '../../sass/UserProfile.module.scss';
+import { userProfile, expertiseListStyle, userLocation, userName } from '../../sass/UserProfile.module.scss';
 
-const UserProfile = ({user}) => {
+const UserProfile = ({ user, expertiseList }) => {
+    const [listLength, updateListLength] = useState(expertiseList.length);
 
+    useEffect(() => {
+        if(listLength === 0) getExpertiseList();
+        updateListLength(expertiseList.length);
+    },[listLength]);
+
+    const findListItemName = (list) => {
+        const name = list.map((item) => { 
+            return expertiseList.find(el => { 
+                if (el._id === item) { 
+                    return el;
+                } 
+            });
+        });
+
+        return name.map((item, index) => {
+            return <li key={index}>{item.name}</li>
+        });
+
+    }
     return (
         <section className={userProfile}>
             <header>
@@ -18,10 +40,9 @@ const UserProfile = ({user}) => {
                     </div>
                 <div>
                     <h3>Expertise</h3>
-                    <ul className={expertiseList}>
-                        {user.expertise.map((item, index) => {
-                            return <li key={index}>{item}</li>
-                        })}
+                    <ul className={expertiseListStyle}>
+                        { expertiseList.length ? findListItemName(user.expertise) : null }
+                        {/* { findListItemName(user.expertiseList)} */}
                     </ul>
                 </div>
             </header>
@@ -32,8 +53,9 @@ const UserProfile = ({user}) => {
 const mapStateToProps = state => {
     console.log(state)
     return {
-        user: state.auth.user
+        user: state.auth.user,
+        expertiseList: state.expertiseList
     }
 }
 
-export default connect(mapStateToProps)(UserProfile);
+export default connect(mapStateToProps, { getExpertiseList })(UserProfile);

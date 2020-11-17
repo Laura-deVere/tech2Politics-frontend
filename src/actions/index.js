@@ -1,8 +1,9 @@
-import { SIGN_UP, SIGN_IN, SIGN_OUT, ERROR } from './types';
+import { SIGN_UP, SIGN_IN, SIGN_OUT, ERROR, GET_EXP_LIST } from './types';
 import axios from '../apis/user';
 
 export const signUp = (newUser) => async (dispatch) => {
     //do a sign in thing
+    // const listExpertise = newUser.expertise.map(item => item.name);
     const options = {
             method: 'POST',
             url: '/signup',
@@ -84,3 +85,49 @@ export const signOut = (email) => async (dispatch) => {
         })
         .catch((err) => console.log(err))
 }
+
+export const getExpertiseList = () => async (dispatch) => {
+    const options = {
+        method: 'GET',
+        url: '/expertise'
+    }
+
+    await axios(options)
+        .then((res) => {
+            console.log(res);
+            dispatch({
+                type: GET_EXP_LIST,
+                payload: res.data
+            });
+        });
+}
+
+// export const createExpertiseListItem = () => { 
+
+//     const addItemToDB = async (item) => {
+//         let options = {
+//             method: 'POST',
+//             withCredentials: false,
+//             url: '/expertise',
+//             data: {
+//                 name: item
+//             }
+//         }
+
+//     await axios(options)
+//         .then((res) => {
+//             // localStorage.removeItem('token');
+//             // dispatch({
+//             //     type: SIGN_OUT,
+//             //     payload: null
+//             // })
+//             console.log(res);
+//         })
+//         .catch((err) => console.log(err))
+//     }
+//     expertiseList.forEach((item) => {
+       
+//         addItemToDB(item)
+        
+//     });
+// }
