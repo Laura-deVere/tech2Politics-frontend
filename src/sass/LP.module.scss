@@ -39,7 +39,10 @@
     ul {
       width: 80%;
       display: flex;
-      justify-content: space-evenly;
+      justify-content: flex-start;
+      li {
+        margin-right: 1em;
+      }
     }
   }
 }
@@ -66,8 +69,7 @@
   z-index: 1;
   height: 100%;
 }
-// .overlay::before{}
-.overlay::before {
+.overlay maybe user later .overlay::before {
   content: "";
   position: absolute;
   opacity: 0.7;
@@ -79,7 +81,7 @@
   right: 0px;
   bottom: 0px;
   // background-image: linear-gradient(135deg, $purple 0%, $dark 100%);
-  background-image: linear-gradient(135deg, #0173ec 0%, #743fe5 100%);
+  background-image: linear-gradient(135deg, #0173ec 0%, #743fe5 50%);
 }
 
 .lpwwd {

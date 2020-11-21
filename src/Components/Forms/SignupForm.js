@@ -6,7 +6,9 @@ import { Redirect } from 'react-router-dom';
 import Dropdown from '../Dropdown';
 import Button from '../Button';
 import { form, signup, formDetailField, formErrorField, formButtons, expertiseListItem } from '../../sass/Form.module.scss';
- 
+ import faker from 'faker';
+
+
 const validate = values => {
     const errors = {};
     const numberRegex = new RegExp('^\\d+$');
@@ -77,8 +79,33 @@ const SignupForm = ({ signUp, getExpertiseList, expertiseList }) => {
         setFormIsSubmitted(true); 
     }
 
+
+
+    const fakeIt = async () => {
+        console.log(faker.name.firstName('female'));
+        console.log(faker.name.firstName('female'));
+        const fakeUser = {
+            email: faker.internet.email(),
+            password: '12345678',
+            firstName: faker.name.firstName('female'),
+            lastName: faker.name.lastName('female'),
+            location: faker.address.city(),
+            website: faker.internet.url(),
+            linkedin: faker.internet.url(),
+            summary: faker.lorem.words(150),
+            expertise: [
+                "5fb2d3588fee930caa972859",
+                "5fb2d3588fee930caa97285a",
+                "5fb2d3588fee930caa97285b"
+            ]
+        }
+            await signUp(fakeUser);
+            console.log('faking it')
+    }
+
     return (
             <>
+                {/* <button style={{marginTop: '150px'}} onClick={()=>fakeIt()}>CLICK ME</button> */}
                 {
                     formIsSubmitted ? <Redirect to={'/signin'} /> : (
                         <Formik

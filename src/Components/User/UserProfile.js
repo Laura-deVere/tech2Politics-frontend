@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { getExpertiseList } from '../../actions';
+import { getUserMatches } from '../../actions';
+import UserMatches from './UserMatches';
 import Avatar from "../Avatar"; 
 
 import { userProfile, expertiseListStyle, userLocation, userName } from '../../sass/UserProfile.module.scss';
+import { useEffect, useState } from 'react';
 
-const UserProfile = ({ user, expertiseList }) => {
-    const [listLength, updateListLength] = useState(expertiseList.length);
+const UserProfile = ({ user, expertiseList, userMatches, getUserMatches }) => {
+    const [dataLoading, setDataLoading] = useState(true);
 
-    useEffect(() => {
-        if(listLength === 0) getExpertiseList();
-        updateListLength(expertiseList.length);
-    },[listLength]);
+    useEffect(async () => {
+        await getUserMatches(user.expertise);
+        setDataLoading(false);
+        console.log(dataLoading)
+    },[])
 
     const findListItemName = (list) => {
         const name = list.map((item) => { 
@@ -27,6 +29,7 @@ const UserProfile = ({ user, expertiseList }) => {
         });
 
     }
+
     return (
         <section className={userProfile}>
             <header>
@@ -41,11 +44,12 @@ const UserProfile = ({ user, expertiseList }) => {
                 <div>
                     <h3>Expertise</h3>
                     <ul className={expertiseListStyle}>
-                        { expertiseList.length ? findListItemName(user.expertise) : null }
-                        {/* { findListItemName(user.expertiseList)} */}
+                        { expertiseList.length !== 0 ? findListItemName(user.expertise) : null }
                     </ul>
                 </div>
             </header>
+            { !dataLoading && userMatches ? <UserMatches users={userMatches} /> : null }
+            {/* <UserMatches users={userMatches} /> */}
         </section>
     )
 }
@@ -54,8 +58,9 @@ const mapStateToProps = state => {
     console.log(state)
     return {
         user: state.auth.user,
+        userMatches: state.users.userMatches,
         expertiseList: state.expertiseList
     }
 }
 
-export default connect(mapStateToProps, { getExpertiseList })(UserProfile);
+export default connect(mapStateToProps, { getUserMatches })(UserProfile);

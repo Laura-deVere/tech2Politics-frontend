@@ -3,7 +3,8 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-
+import { connect } from 'react-redux';
+import { getExpertiseList, getLatestUsersList } from './actions';
 import PrivateRoute from './Components/PrivateRoute';
 import Nav from './Components/Nav';
 import LP from "./Components/LP/LP";
@@ -13,14 +14,20 @@ import UserProfile from './Components/User/UserProfile';
 import Footer from './Components/Footer';
 
 import './App.scss';
+import { useEffect } from 'react';
 
-const App = () => {
+const App = ({ getExpertiseList, getLatestUsersList, currentUser }) => {
+  useEffect(() => {
+    getExpertiseList();
+    getLatestUsersList();
+  },[]);
+
   return (
     <div className="App">
       <Router>
       <Nav />
         <Switch>
-          <PrivateRoute path="/user">
+          <PrivateRoute path="/user" currentUser={currentUser}>
             <UserProfile />
           </PrivateRoute>
           <Route path="/signin">
@@ -39,4 +46,6 @@ const App = () => {
   );
 }
 
-export default App;
+const mapStateToProps = state => ({ currentUser: state.auth.currentUser})
+
+export default connect(mapStateToProps, { getExpertiseList, getLatestUsersList })(App);

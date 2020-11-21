@@ -1,9 +1,29 @@
-import { SIGN_UP, SIGN_IN, SIGN_OUT, ERROR, GET_EXP_LIST } from './types';
+import { 
+    SIGN_UP, 
+    SIGN_IN, 
+    SIGN_OUT, 
+    LOGGED_IN, 
+    ERROR, 
+    GET_EXP_LIST, 
+    FETCH_LATEST_USERS,
+    GET_USER_MATCHES 
+} from './types';
 import axios from '../apis/user';
+import jwtDecode from 'jwt-decode';
+
+export const isUserLoggedIn = (loggedIn) => {
+    console.log('running')
+    return {
+        type: LOGGED_IN,
+        payload: {
+           currentUser: loggedIn
+        }
+    }
+}
 
 export const signUp = (newUser) => async (dispatch) => {
     //do a sign in thing
-    // const listExpertise = newUser.expertise.map(item => item.name);
+    
     const options = {
             method: 'POST',
             url: '/signup',
@@ -21,14 +41,16 @@ export const signUp = (newUser) => async (dispatch) => {
             }
         }
 
-       return await axios(options)
-            .then((res) => {
-                dispatch({
-                    type: SIGN_UP,
-                    payload: res.data
-                })
-            })
-            .catch((err) => console.log(err));  
+    return await axios(options)
+        .then((res) => {
+            dispatch({
+                type: SIGN_UP,
+                payload: res.data.message
+            });
+            console.log(res);
+           postUserIdeaToExpertiseList(res.data.userId, res.data.expertise);
+        })
+        .catch((err) => console.log(err));  
 }
 
 export const signIn = (email, password) => async (dispatch) => {
@@ -46,16 +68,18 @@ export const signIn = (email, password) => async (dispatch) => {
 
     await axios(options)
         .then((res) => {
-            console.log(res)
-            localStorage.setItem('token', res.data.token)
+            dispatch(isUserLoggedIn(true));
             success = true;
             dispatch({
                 type: SIGN_IN,
-                payload: res.data.user
+                payload: {
+                    ...jwtDecode(res.data.token),
+                    authToken: res.data.token
+                }
             });
         })
         .catch((err) => {
-            console.log(err.response);
+            isUserLoggedIn(false);
             success = false;
             dispatch({
                 type: ERROR,
@@ -77,15 +101,75 @@ export const signOut = (email) => async (dispatch) => {
 
     await axios(options)
         .then((res) => {
-            localStorage.removeItem('token');
+            isUserLoggedIn(false);
             dispatch({
                 type: SIGN_OUT,
-                payload: null
+                payload: {
+                    user: null, 
+                    authToken: null, 
+                    iat: null, 
+                    exp: null
+                }
             })
         })
         .catch((err) => console.log(err))
 }
 
+/// Users List
+export const getUserMatches = (userExpertiseList) => async (dispatch) => {
+    console.log(userExpertiseList)
+    const options = {
+        method: 'GET',
+        url: '/user/matches',
+        params: {
+            expertise: userExpertiseList
+        }
+    }
+
+    await axios(options)
+        .then(res => {
+            console.log(res);
+            dispatch({
+                type: GET_USER_MATCHES,
+                payload: {
+                    userMatches: res.data
+                }
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            dispatch({
+                type: ERROR,
+                payload: err.data
+            })
+        })
+}
+
+export const getLatestUsersList = () => async (dispatch) => {
+    const options = {
+        method: 'GET',
+        url: '/users/latest'
+    }
+
+    await axios(options)
+    .then(res => {
+        console.log(res);
+        dispatch({
+            type: FETCH_LATEST_USERS,
+            payload: {
+                latestUsers: res.data
+            }
+        })
+    })
+    .catch(err => {
+        dispatch({
+            type: ERROR,
+            payload: { error: err.response.data }
+        });
+    })
+}
+
+// Expertise List
 export const getExpertiseList = () => async (dispatch) => {
     const options = {
         method: 'GET',
@@ -94,7 +178,6 @@ export const getExpertiseList = () => async (dispatch) => {
 
     await axios(options)
         .then((res) => {
-            console.log(res);
             dispatch({
                 type: GET_EXP_LIST,
                 payload: res.data
@@ -102,32 +185,29 @@ export const getExpertiseList = () => async (dispatch) => {
         });
 }
 
-// export const createExpertiseListItem = () => { 
-
-//     const addItemToDB = async (item) => {
-//         let options = {
-//             method: 'POST',
-//             withCredentials: false,
-//             url: '/expertise',
-//             data: {
-//                 name: item
-//             }
-//         }
-
-//     await axios(options)
-//         .then((res) => {
-//             // localStorage.removeItem('token');
-//             // dispatch({
-//             //     type: SIGN_OUT,
-//             //     payload: null
-//             // })
-//             console.log(res);
-//         })
-//         .catch((err) => console.log(err))
-//     }
-//     expertiseList.forEach((item) => {
+export const postUserIdeaToExpertiseList = (userId, expertise) => {
+    
+    expertise.forEach( async (expertiseId) => {
        
-//         addItemToDB(item)
+        const options = {
+            method: 'PUT',
+            url: `/expertise/${expertiseId}`,
+            data: {
+                id: expertiseId,
+                userId: userId
+            }
+        }
+
+        await axios(options)
+        .then((res) => {
+            // localStorage.removeItem('token');
+            // dispatch({
+            //     type: SIGN_OUT,
+            //     payload: null
+            // })
+            // console.log(res);
+        })
+        .catch((err) => console.log(err)) 
         
-//     });
-// }
+    });
+}
