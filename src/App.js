@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { 
   BrowserRouter as Router,
   Switch,
@@ -11,10 +12,10 @@ import LP from "./Components/LP/LP";
 import SignupForm  from './Components/Forms/SignupForm';
 import SigninForm  from './Components/Forms/SigninForm';
 import UserProfile from './Components/User/UserProfile';
+import UserPreview from './Components/User/UserPreview';
 import Footer from './Components/Footer';
 
 import './App.scss';
-import { useEffect } from 'react';
 
 const App = ({ getExpertiseList, getLatestUsersList, currentUser }) => {
   useEffect(() => {
@@ -27,6 +28,7 @@ const App = ({ getExpertiseList, getLatestUsersList, currentUser }) => {
       <Router>
       <Nav />
         <Switch>
+          <Route path="/userpreview" exact component={UserPreview}/>
           <PrivateRoute path="/user" currentUser={currentUser}>
             <UserProfile />
           </PrivateRoute>

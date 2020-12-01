@@ -7,9 +7,23 @@
   margin: 0 auto;
   background-color: $offwhite;
   header {
-    max-width: 800px;
+    max-width: 1000px;
     width: 80%;
     margin: 100px auto;
+    background-color: #fff;
+    border-radius: 4px;
+    display: flex;
+    padding: 1em;
+    ul {
+      padding: 0;
+      display: flex;
+      li {
+        font-size: $copySmall;
+      }
+    }
+    span {
+      font-weight: $normal !important;
+    }
     a i {
       font-size: $copyExtraLarge;
       color: $pink;
@@ -17,6 +31,11 @@
     }
     p {
       color: $dark;
+      max-width: 90%;
+    }
+    button {
+      min-width: 100px;
+      height: 40px;
     }
   }
 }
@@ -51,5 +70,58 @@
     text-align: center;
     align-items: center;
     justify-content: center;
+  }
+}
+
+.matchesList {
+  background-color: $offwhite;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 800px;
+  width: 80%;
+  h4 {
+    margin: 24px 0 0 0;
+    color: $purple;
+  }
+  h5 {
+    margin: 0.5em;
+    text-align: left;
+    width: 90%;
+  }
+}
+
+.matchesPreview {
+  width: 250px;
+  height: 250px;
+  text-align: center;
+  margin: 24px 0 48px 0;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  li {
+    font-size: $copySmall;
+    margin-top: 0.3em;
+  }
+}
+
+@media (min-width: 640px) {
+  .matchesList {
+    ul {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      // justify-content: space-between;
+      width: 90%;
+    }
+    .matchesPreview {
+      margin-right: 1em;
+    }
   }
 }

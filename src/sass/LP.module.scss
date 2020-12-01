@@ -69,20 +69,20 @@
   z-index: 1;
   height: 100%;
 }
-.overlay maybe user later .overlay::before {
-  content: "";
-  position: absolute;
-  opacity: 0.7;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  // background-image: linear-gradient(135deg, $purple 0%, $dark 100%);
-  background-image: linear-gradient(135deg, #0173ec 0%, #743fe5 50%);
-}
+// .overlay maybe user later .overlay::before {
+//   content: "";
+//   position: absolute;
+//   opacity: 0.7;
+//   width: 100%;
+//   height: 100%;
+//   z-index: 1;
+//   top: 0px;
+//   left: 0px;
+//   right: 0px;
+//   bottom: 0px;
+//   // background-image: linear-gradient(135deg, $purple 0%, $dark 100%);
+//   background-image: linear-gradient(135deg, #0173ec 0%, #743fe5 50%);
+// }
 
 .lpwwd {
   background-color: $dark;
@@ -109,6 +109,7 @@
   align-items: center;
   text-align: center;
   margin: 24px 0 48px 0;
+  border-radius: 4px;
   h3 {
     color: $pink;
     width: 68%;
@@ -176,6 +177,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 4px;
 }
 
 @media (min-width: 640px) {
@@ -282,10 +284,8 @@
 
 @media (min-width: 1280px) {
   .lpmain {
-    height: 500px;
     align-items: flex-start;
     .image {
-      height: 500px;
       overflow: hidden;
       width: 50%;
       img {

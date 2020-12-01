@@ -1,21 +1,14 @@
 import { connect } from 'react-redux';
-import { getUserMatches } from '../../actions';
-import UserMatches from './UserMatches';
+import { Link } from 'react-router-dom';
 import Avatar from "../Avatar"; 
 import Button from '../Button';
 
-import { userProfile, expertiseListStyle, userLocation, userName } from '../../sass/UserProfile.module.scss';
-import { useEffect, useState } from 'react';
+import { userProfile, userLocation, userName } from '../../sass/UserProfile.module.scss';
 
-const UserProfile = ({ user, expertiseList, userMatches, getUserMatches }) => {
-    const [dataLoading, setDataLoading] = useState(true);
-
-    useEffect(async () => {
-        await getUserMatches(user.expertise);
-        setDataLoading(false);
-        console.log(dataLoading)
-    },[])
-
+const UserPreview = (props) => {
+    console.log(props.location.state.data)
+    const user = props.location.state.data;
+    const expertiseList = props.expertiseList;
     const findListItemName = (list) => {
         const name = list.map((item) => { 
             return expertiseList.find(el => { 
@@ -47,20 +40,16 @@ const UserProfile = ({ user, expertiseList, userMatches, getUserMatches }) => {
                         <a href={user.linkedIn}><i className="lni lni-linkedin-original"></i></a>
                     </div>
                 </div>
-                <Button text="Edit Profile" />
+                <Button text="Connect" />
             </header>
-            { !dataLoading && userMatches ? <UserMatches users={userMatches} /> : null }
         </section>
     )
 }
 
 const mapStateToProps = state => {
-    console.log(state)
     return {
-        user: state.auth.user,
-        userMatches: state.users.userMatches,
         expertiseList: state.expertiseList
     }
 }
 
-export default connect(mapStateToProps, { getUserMatches })(UserProfile);
+export default connect(mapStateToProps)(UserPreview);

@@ -1,4 +1,8 @@
 import { connect } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
+
+import { matchesList, matchesPreview } from '../../sass/UserProfile.module.scss';
+import Avatar from '../Avatar';
 
 const UserMatches = ({ users, expertiseList }) => {
 
@@ -12,18 +16,25 @@ const UserMatches = ({ users, expertiseList }) => {
         });
 
         return name.map((item, index) => {
-            return <li>{item.name}</li>
+            return <li key={index}>{item.name}</li>
         });
     }
 
     return (
-        <div>
+        <div className={matchesList}>
             <h3>Matches</h3>
             <ul>
                 {users.map((user, index) => {
                     return (
-                        <li key={index}>
+                        <li key={index} className={matchesPreview}>
+                            <Avatar size={`small`} />
+                            <Link to={{
+                                pathname: "/userpreview",
+                                state: { data: user }
+                            }}>
                             <h4>{user.firstName} {user.lastName}</h4>
+                            </Link>
+                            <h5>Area of expertise:</h5>
                             <ul>
                                 {
                                    findListItemName(user.expertise)

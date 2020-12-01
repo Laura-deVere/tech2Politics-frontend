@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 function PrivateRoute({ currentUser, children, ...rest }) {
+        console.log(children)
     return (
       <Route
         {...rest}
