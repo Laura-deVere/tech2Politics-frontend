@@ -23,7 +23,7 @@ export const isUserLoggedIn = (loggedIn) => {
 
 export const signUp = (newUser) => async (dispatch) => {
     //do a sign in thing
-    
+    console.log('-------------------------------------------',newUser)
     const options = {
             method: 'POST',
             url: '/signup',
@@ -47,8 +47,8 @@ export const signUp = (newUser) => async (dispatch) => {
                 type: SIGN_UP,
                 payload: res.data.message
             });
-            console.log(res);
-           postUserIdeaToExpertiseList(res.data.userId, res.data.expertise);
+            // console.log(res);
+        //    postUserIdeaToExpertiseList(res.data.userId, res.data.expertise);
         })
         .catch((err) => console.log(err));  
 }
@@ -116,19 +116,19 @@ export const signOut = (email) => async (dispatch) => {
 }
 
 /// Users List
-export const getUserMatches = (userExpertiseList) => async (dispatch) => {
-    console.log(userExpertiseList)
+export const getUserMatches = (userExpertiseList, userEmail) => async (dispatch) => {
+    const searchParams = userExpertiseList.map(item => item.name);
     const options = {
         method: 'GET',
         url: '/user/matches',
         params: {
-            expertise: userExpertiseList
+            expertise: searchParams,
+            email: userEmail
         }
     }
 
     await axios(options)
         .then(res => {
-            console.log(res);
             dispatch({
                 type: GET_USER_MATCHES,
                 payload: {
@@ -137,7 +137,6 @@ export const getUserMatches = (userExpertiseList) => async (dispatch) => {
             });
         })
         .catch(err => {
-            console.log(err);
             dispatch({
                 type: ERROR,
                 payload: err.data
@@ -153,7 +152,6 @@ export const getLatestUsersList = () => async (dispatch) => {
 
     await axios(options)
     .then(res => {
-        console.log(res);
         dispatch({
             type: FETCH_LATEST_USERS,
             payload: {
@@ -183,31 +181,4 @@ export const getExpertiseList = () => async (dispatch) => {
                 payload: res.data
             });
         });
-}
-
-export const postUserIdeaToExpertiseList = (userId, expertise) => {
-    
-    expertise.forEach( async (expertiseId) => {
-       
-        const options = {
-            method: 'PUT',
-            url: `/expertise/${expertiseId}`,
-            data: {
-                id: expertiseId,
-                userId: userId
-            }
-        }
-
-        await axios(options)
-        .then((res) => {
-            // localStorage.removeItem('token');
-            // dispatch({
-            //     type: SIGN_OUT,
-            //     payload: null
-            // })
-            // console.log(res);
-        })
-        .catch((err) => console.log(err)) 
-        
-    });
 }

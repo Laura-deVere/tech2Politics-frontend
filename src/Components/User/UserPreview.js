@@ -6,22 +6,14 @@ import Button from '../Button';
 import { userProfile, userLocation, userName } from '../../sass/UserProfile.module.scss';
 
 const UserPreview = (props) => {
-    console.log(props.location.state.data)
     const user = props.location.state.data;
     const expertiseList = props.expertiseList;
-    const findListItemName = (list) => {
-        const name = list.map((item) => { 
-            return expertiseList.find(el => { 
-                if (el._id === item) { 
-                    return el;
-                } 
-            });
-        });
 
+    const renderList = (list) => {
+        const name = list.map((item) => item.name );
         return name.map((item, index) => {
-        return <li key={index}>{item.name} {index !== list.length - 1 ? ' | ' : ''}</li>
+            return <li key={index}>{item} {index !== list.length - 1 ? ' | ' : ''}</li>
         });
-
     }
 
     return (
@@ -31,7 +23,7 @@ const UserPreview = (props) => {
                 <div>
                     <h1 className={userName}>{user.firstName} {user.lastName}</h1>
                     <ul>
-                        { expertiseList.length !== 0 ? findListItemName(user.expertise) : null }
+                        { expertiseList.length !== 0 ? renderList(user.expertise) : null }
                     </ul>
                     <p className={userLocation}>Location: <span>{user.location}</span></p>
                     <p>{user.summary}</p>

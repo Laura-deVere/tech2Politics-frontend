@@ -21,7 +21,7 @@ const App = ({ getExpertiseList, getLatestUsersList, currentUser }) => {
   useEffect(() => {
     getExpertiseList();
     getLatestUsersList();
-  },[]);
+  },[getExpertiseList, getLatestUsersList]);
 
   return (
     <div className="App">

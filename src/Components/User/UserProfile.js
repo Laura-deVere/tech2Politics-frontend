@@ -1,53 +1,55 @@
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getUserMatches } from '../../actions';
 import UserMatches from './UserMatches';
+import UserProfileEdit from './UserProfileEdit';
 import Avatar from "../Avatar"; 
 import Button from '../Button';
 
-import { userProfile, expertiseListStyle, userLocation, userName } from '../../sass/UserProfile.module.scss';
-import { useEffect, useState } from 'react';
+import { userProfile, userLocation, userName } from '../../sass/UserProfile.module.scss';
 
-const UserProfile = ({ user, expertiseList, userMatches, getUserMatches }) => {
+const UserProfile = ({ user, userMatches, getUserMatches }) => {
     const [dataLoading, setDataLoading] = useState(true);
+    const [editMode, setEditMode] = useState(false);
 
     useEffect(async () => {
-        await getUserMatches(user.expertise);
+        await getUserMatches(user.expertise, user.email);
         setDataLoading(false);
-        console.log(dataLoading)
     },[])
 
     const findListItemName = (list) => {
         const name = list.map((item) => { 
-            return expertiseList.find(el => { 
-                if (el._id === item) { 
-                    return el;
-                } 
-            });
+            return item.name;
         });
-
+        console.log(name)
         return name.map((item, index) => {
-        return <li key={index}>{item.name} {index !== list.length - 1 ? ' | ' : ''}</li>
+            return <li key={index}>{item} {index !== list.length - 1 ? ' | ' : ''}</li>
         });
-
     }
 
     return (
         <section className={userProfile}>
             <header>
-                <Avatar size="large" />
-                <div>
-                    <h1 className={userName}>{user.firstName} {user.lastName}</h1>
-                    <ul>
-                        { expertiseList.length !== 0 ? findListItemName(user.expertise) : null }
-                    </ul>
-                    <p className={userLocation}>Location: <span>{user.location}</span></p>
-                    <p>{user.summary}</p>
-                    <div>
-                        <a href={user.website}><i className="lni lni-world"></i></a>
-                        <a href={user.linkedIn}><i className="lni lni-linkedin-original"></i></a>
-                    </div>
-                </div>
-                <Button text="Edit Profile" />
+                { editMode ? <UserProfileEdit user={user} /> :
+                    (
+                    <>
+                        <Avatar size="large" />
+                        <div>
+                            <h1 className={userName}>{user.firstName} {user.lastName}</h1>
+                            <ul>
+                                { user.expertise.length > 0 ? findListItemName(user.expertise) : null }
+                            </ul>
+                            <p className={userLocation}>Location: <span>{user.location}</span></p>
+                            <p>{user.summary}</p>
+                            <div>
+                                <a href={user.website}><i className="lni lni-world"></i></a>
+                                <a href={user.linkedIn}><i className="lni lni-linkedin-original"></i></a>
+                            </div>
+                        </div>
+                        <Button text="Edit Profile" onClickHandler={() => setEditMode(true)} />
+                    </>
+                    )
+                }   
             </header>
             { !dataLoading && userMatches ? <UserMatches users={userMatches} /> : null }
         </section>
@@ -55,11 +57,9 @@ const UserProfile = ({ user, expertiseList, userMatches, getUserMatches }) => {
 }
 
 const mapStateToProps = state => {
-    console.log(state)
     return {
         user: state.auth.user,
-        userMatches: state.users.userMatches,
-        expertiseList: state.expertiseList
+        userMatches: state.users.userMatches
     }
 }
 

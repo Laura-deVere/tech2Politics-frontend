@@ -6,17 +6,13 @@ import Avatar from '../Avatar';
 
 const UserMatches = ({ users, expertiseList }) => {
 
-    const findListItemName = (list) => {
+    const renderList = (list) => {
         const name = list.map((item) => { 
-            return expertiseList.find(el => { 
-                if (el._id === item) { 
-                    return el;
-                } 
-            });
+            return item.name;
         });
 
         return name.map((item, index) => {
-            return <li key={index}>{item.name}</li>
+            return <li key={index}>{item}</li>
         });
     }
 
@@ -37,7 +33,7 @@ const UserMatches = ({ users, expertiseList }) => {
                             <h5>Area of expertise:</h5>
                             <ul>
                                 {
-                                   findListItemName(user.expertise)
+                                   renderList(user.expertise)
                                 }
                             </ul>
                         </li>

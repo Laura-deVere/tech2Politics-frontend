@@ -7,6 +7,7 @@ import Dropdown from '../Dropdown';
 import Button from '../Button';
 import { form, signup, formDetailField, formErrorField, formButtons, expertiseListItem } from '../../sass/Form.module.scss';
  import faker from 'faker';
+// import expertise from '../../../../server/expertise';
 
 
 const validate = values => {
@@ -94,9 +95,9 @@ const SignupForm = ({ signUp, getExpertiseList, expertiseList }) => {
             linkedin: faker.internet.url(),
             summary: faker.lorem.words(150),
             expertise: [
-                "5fb2d3588fee930caa972859",
-                "5fb2d3588fee930caa97285a",
-                "5fb2d3588fee930caa97285b"
+                {_id: "5fb2b484199d702b629b6231", name: "ARTIFICIAL INTELLIGENCE"},
+                {_id: "5fb2d3588fee930caa97283e", name: "COMPUTER SCIENCE"},
+                {_id: "5fb2d3588fee930caa972843", name: "CYBERSECURITY"}
             ]
         }
             await signUp(fakeUser);
@@ -105,7 +106,7 @@ const SignupForm = ({ signUp, getExpertiseList, expertiseList }) => {
 
     return (
             <>
-                {/* <button style={{marginTop: '150px'}} onClick={()=>fakeIt()}>CLICK ME</button> */}
+                <button style={{marginTop: '150px'}} onClick={()=>fakeIt()}>CLICK ME</button>
                 {
                     formIsSubmitted ? <Redirect to={'/signin'} /> : (
                         <Formik
@@ -125,6 +126,7 @@ const SignupForm = ({ signUp, getExpertiseList, expertiseList }) => {
                         >
                             
                             {({ errors, touched, values, resetForm, handleSubmit }) => {
+                                console.log(values.expertise)
                                 return (
                                     <Form onSubmit={handleSubmit} className={`${form} ${signup}`} >
                                         <h1>Join Tech2Politics</h1>
