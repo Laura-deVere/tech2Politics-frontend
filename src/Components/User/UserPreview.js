@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Avatar from "../Avatar"; 
 import Button from '../Button';
 
@@ -28,8 +27,8 @@ const UserPreview = (props) => {
                     <p className={userLocation}>Location: <span>{user.location}</span></p>
                     <p>{user.summary}</p>
                     <div>
-                        <a href={user.website}><i className="lni lni-world"></i></a>
-                        <a href={user.linkedIn}><i className="lni lni-linkedin-original"></i></a>
+                        <a href={user.website} target="_blank" rel="noreferrer"><i className="lni lni-world"></i></a>
+                        <a href={user.linkedIn} target="_blank" rel="noreferrer"><i className="lni lni-linkedin-original"></i></a>
                     </div>
                 </div>
                 <Button text="Connect" />

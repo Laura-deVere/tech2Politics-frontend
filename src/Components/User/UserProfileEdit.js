@@ -1,17 +1,19 @@
 import { connect } from 'react-redux';
+import { updateUser } from '../../actions';
 import { Form, Field, FieldArray, Formik } from 'formik';
 import Avatar from "../Avatar"; 
 import Button from '../Button';
 import Dropdown from '../Dropdown';
 
-import { userLocation, userName } from '../../sass/UserProfile.module.scss';
-import { formDetailField, formErrorField, expertiseListItem } from '../../sass/Form.module.scss';
+import { editAvatar, expertiseListItems } from '../../sass/UserProfile.module.scss';
+import { formDetailField, formErrorField, formButtons } from '../../sass/Form.module.scss';
 
 const validate = values => {
     const errors = {};
     const numberRegex = new RegExp('^\\d+$');
     const rgx = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi; 
-    const urlRegex = new RegExp(rgx);
+    const webRegex = new RegExp(rgx);
+    const linkedInRegex = new RegExp(rgx);
         if(values) {
             if(values.expertise === undefined) {
                 errors.expertise = "Something went wrong";
@@ -25,7 +27,6 @@ const validate = values => {
             } else if (numberRegex.test(values.firstName)) {
                 errors.firstName = "Must not contain numbers";
             }
-
             if(!values.lastName) {
                 errors.lastName = 'Required';
             } else if (values.lastName.length > 20) {
@@ -38,23 +39,29 @@ const validate = values => {
             } else if (values.summary.length < 250) {
                 errors.summary = 'Please include a summary greater than 250 characters';
             }
-
             if(!values.location) {
                 errors.location = 'Please provide a location';
             }
-            if(values.linkedin && !urlRegex.test(values.linkedin)) {
-                errors.linkedin = 'Please provide a valid url';
+            if(values.website && !webRegex.test(values.website)) {
+                errors.website = 'Please provide a valid url';
             }
-
-            if(values.website && !urlRegex.test(values.website)) {
-                errors.linkedin = 'Please provide a valid url';
+            if(values.linkedin && !linkedInRegex.test(values.linkedin)) {
+                errors.linkedin = 'Please provide a valid LinkedIn url';
             }
     }
-
+    console.log(errors)
     return errors;
 }
 
-const UserProfileEdit = ({ user, expertiseList }) => {
+const UserProfileEdit = ({ user, expertiseList, updateUser, handleToggleEditVisibility }) => {
+    const handleFormSubmit = async (values) => {
+        const userID = user._id;
+        console.log(userID)
+        console.log(values)
+        await updateUser(values, userID);
+        handleToggleEditVisibility(false);
+    }
+
     return (
             <Formik
                 initialValues={{
@@ -62,23 +69,25 @@ const UserProfileEdit = ({ user, expertiseList }) => {
                     lastName: user.lastName,
                     location: user.location,
                     website: user.website,
-                    linkedin: user.linkedIn,
+                    linkedin: user.linkedin,
                     summary: user.summary,
                     expertise: user.expertise
                 }} 
                 validate={validate}   
-                onSubmit={values => console.log(values)}
+                onSubmit={values => handleFormSubmit(values)}
             >
                 { 
-                        ({ errors, touched, values, resetForm, handleSubmit }) => (
-                <Form onSubmit={handleSubmit} >
-                    <div>
+                ({ errors, touched, values, handleSubmit }) => (
+                <Form>
+                    <div className={editAvatar}>
                         <Avatar size="large" />
-                        <Button text="Change Avatar" />
+                        <Button text="Change Avatar" type="button" />
                     </div>
                     <div>
-                    <div className={userName}>
+                    <div className={formDetailField}>
+                        {touched.firstName && errors.firstName ? <div className={formErrorField}>{errors.firstName}</div> : null}
                         <Field type="text" name="firstName" placeholder={user.firstName} />
+                        {touched.lastName && errors.lastName ? <div className={formErrorField}>{errors.lastName}</div> : null}
                         <Field type="text" name="lastName" placeholder={user.lastName}/>
                     </div>
                     <FieldArray
@@ -88,38 +97,48 @@ const UserProfileEdit = ({ user, expertiseList }) => {
                                 <Dropdown listName='CHOOSE YOUR EXPERTISE...' listOptions={expertiseList} onClickHandler={push} list={values.expertise} />
                                 
                                 {errors.expertise ? <div className={formErrorField}>{errors.expertise}</div> : null}
-                                {values.expertise && values.expertise.length > 0 ? (
-                                    values.expertise.map((item, index) => {
-                                        return (
-                                            <div key={index} className={expertiseListItem}>
-                                                <Field name={`expertise[${index}]`} type="text"  value={values.expertise[index].name} disabled/>
-                                                <button 
-                                                    type="button"
-                                                    onClick={() => remove(index)}>
-                                                    X
-                                                </button>
-                                            </div>
-                                        )
-                                    })
-                                    ) : null
-                                }
+                                <ul className={expertiseListItems}>
+                                    {values.expertise && values.expertise.length > 0 ? (
+                                        values.expertise.map((item, index) => {
+                                            return (
+                                                <div key={index}>
+                                                    <Field name={`expertise[${index}]`} type="text"  value={values.expertise[index].name} disabled/>
+                                                    <button 
+                                                        type="button"
+                                                        onClick={() => remove(index)}>
+                                                        X
+                                                    </button>
+                                                </div>
+                                            )
+                                        })
+                                        ) : null
+                                    }
+                                </ul>
                             </div>
                         )}
                     />
-                        <div className={userLocation}>Location: 
+                        <div className={formDetailField}>
+                            {touched.location && errors.location ? <div className={formErrorField}>{errors.location}</div> : null}
+                            Location: 
                             <Field type="text" name="location" placeholder={user.location} />
                         </div>
-                        <p>
+                        <div className={formDetailField}>
+                            {touched.summary && errors.summary ? <div className={formErrorField}>{errors.summary}</div> : null}
                             <Field as="textarea" id="summary" name="summary" type="text"  cols="30" rows="10" placeholder={user.summary}/>
-                        </p>
-                        <div>
+                        </div>
+                        <div className={formDetailField}>
+                            {touched.website && errors.website ? <div className={formErrorField}>{errors.website}</div> : null}
                             <i className="lni lni-world"></i>
                             <Field id="website" name="website" type="text" placeholder={user.website} />
                             <i className="lni lni-linkedin-original"></i>
-                            <Field id="linkedin" name="linkedin" type="text" placeholder={user.linkedIn}/>
+                            {touched.linkedin && errors.linkedin ? <div className={formErrorField}>{errors.linkedin}</div> : null}
+                            <Field id="linkedin" name="linkedin" type="text" placeholder={user.linkedin}/>
                         </div>
                     </div>
-                    <Button text="Save" />
+                    <div className={formButtons}>
+                        <Button text="Save" type="submit" onClickHandler={handleSubmit}/>
+                        <Button text="Cancel" type="button" onClickHandler={() => handleToggleEditVisibility(false)}/>
+                    </div>
                 </Form>
             )
                 
@@ -129,10 +148,11 @@ const UserProfileEdit = ({ user, expertiseList }) => {
 }
 
 const mapStateToProps = state => {
+    console.log(state)
     return {
         user: state.auth.user,
         expertiseList: state.expertiseList
     }
 }
 
-export default connect(mapStateToProps)(UserProfileEdit);
+export default connect(mapStateToProps, { updateUser })(UserProfileEdit);

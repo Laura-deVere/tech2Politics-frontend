@@ -30,7 +30,7 @@ const Dropdown = ({ listName, listOptions, onClickHandler, list}) => {
 
     return (
         <div className={dropdown} ref={dropdownRef} >
-            <button onClick={() => setIsOpen(!isOpen)}>{listName}<i className="lni lni-arrow-down-circle"></i></button>
+            <button type="button" onClick={() => setIsOpen(!isOpen)}>{listName}<i className="lni lni-arrow-down-circle"></i></button>
             {isOpen ? <ul>{renderList()}</ul> : null}
         </div>
     )

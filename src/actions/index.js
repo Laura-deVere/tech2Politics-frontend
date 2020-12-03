@@ -3,6 +3,7 @@ import {
     SIGN_IN, 
     SIGN_OUT, 
     LOGGED_IN, 
+    UPDATE_USER,
     ERROR, 
     GET_EXP_LIST, 
     FETCH_LATEST_USERS,
@@ -47,8 +48,6 @@ export const signUp = (newUser) => async (dispatch) => {
                 type: SIGN_UP,
                 payload: res.data.message
             });
-            // console.log(res);
-        //    postUserIdeaToExpertiseList(res.data.userId, res.data.expertise);
         })
         .catch((err) => console.log(err));  
 }
@@ -113,6 +112,36 @@ export const signOut = (email) => async (dispatch) => {
             })
         })
         .catch((err) => console.log(err))
+}
+
+export const updateUser = (values, userID) => async (dispatch) => {
+    console.log(values, userID);
+    const options = {
+        method: 'PUT',
+        url: '/user/update',
+        data: {
+            id: userID,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            location: values.location,
+            website: values.website,
+            linkedin: values.linkedin,
+            summary: values.summary,
+            expertise: values.expertise
+        }
+    }
+
+    await axios(options)
+    .then(res => {
+        console.log(res)
+        dispatch({
+            type: UPDATE_USER,
+            payload: {
+                user: res.data
+            }
+        })
+    })
+    .catch(err => console.log(err))
 }
 
 /// Users List

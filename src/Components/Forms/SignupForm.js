@@ -14,7 +14,8 @@ const validate = values => {
     const errors = {};
     const numberRegex = new RegExp('^\\d+$');
     const rgx = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi; 
-    const urlRegex = new RegExp(rgx);
+    const webRegex = new RegExp(rgx);
+    const linkedInRegex = new RegExp(rgx);
         if(values) {
             if(values.expertise === undefined) {
                 errors.expertise = "Something went wrong";
@@ -28,7 +29,6 @@ const validate = values => {
             } else if (numberRegex.test(values.firstName)) {
                 errors.firstName = "Must not contain numbers";
             }
-
             if(!values.lastName) {
                 errors.lastName = 'Required';
             } else if (values.lastName.length > 20) {
@@ -46,22 +46,19 @@ const validate = values => {
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                 errors.email = 'Invalid email'
             }
-
             if(!values.summary) {
                 errors.summary = 'Required'
             } else if (values.summary.length < 250) {
                 errors.summary = 'Please include a summary greater than 250 characters';
             }
-
             if(!values.location) {
                 errors.location = 'Please provide a location';
             }
-            if(values.linkedin && !urlRegex.test(values.linkedin)) {
+            if(values.linkedin && !webRegex.test(values.linkedin)) {
                 errors.linkedin = 'Please provide a valid url';
             }
-
-            if(values.website && !urlRegex.test(values.website)) {
-                errors.linkedin = 'Please provide a valid url';
+            if(values.website && !linkedInRegex.test(values.website)) {
+                errors.website = 'Please provide a valid url';
             }
     }
 
@@ -73,18 +70,14 @@ const SignupForm = ({ signUp, getExpertiseList, expertiseList }) => {
 
     useEffect(() => {
         getExpertiseList()
-    },[]);
+    },[getExpertiseList]);
 
     const handleAxiosPostRequest = async (newUser) => {
         await signUp(newUser);
         setFormIsSubmitted(true); 
     }
 
-
-
     const fakeIt = async () => {
-        console.log(faker.name.firstName('female'));
-        console.log(faker.name.firstName('female'));
         const fakeUser = {
             email: faker.internet.email(),
             password: '12345678',
@@ -100,8 +93,7 @@ const SignupForm = ({ signUp, getExpertiseList, expertiseList }) => {
                 {_id: "5fb2d3588fee930caa972843", name: "CYBERSECURITY"}
             ]
         }
-            await signUp(fakeUser);
-            console.log('faking it')
+         await signUp(fakeUser);
     }
 
     return (
@@ -126,7 +118,6 @@ const SignupForm = ({ signUp, getExpertiseList, expertiseList }) => {
                         >
                             
                             {({ errors, touched, values, resetForm, handleSubmit }) => {
-                                console.log(values.expertise)
                                 return (
                                     <Form onSubmit={handleSubmit} className={`${form} ${signup}`} >
                                         <h1>Join Tech2Politics</h1>

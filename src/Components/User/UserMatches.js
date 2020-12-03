@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { matchesList, matchesPreview } from '../../sass/UserProfile.module.scss';
 import Avatar from '../Avatar';

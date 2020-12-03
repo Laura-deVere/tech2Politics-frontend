@@ -6,16 +6,19 @@ import UserProfileEdit from './UserProfileEdit';
 import Avatar from "../Avatar"; 
 import Button from '../Button';
 
-import { userProfile, userLocation, userName } from '../../sass/UserProfile.module.scss';
+import { userProfile, userProfileEdit, userLocation, userName } from '../../sass/UserProfile.module.scss';
 
 const UserProfile = ({ user, userMatches, getUserMatches }) => {
     const [dataLoading, setDataLoading] = useState(true);
     const [editMode, setEditMode] = useState(false);
 
-    useEffect(async () => {
-        await getUserMatches(user.expertise, user.email);
+    useEffect(() => {
+        async function fetchData() {
+            await getUserMatches(user.expertise, user.email);
+        }
+        fetchData();
         setDataLoading(false);
-    },[])
+    },[user.expertise]);
 
     const findListItemName = (list) => {
         const name = list.map((item) => { 
@@ -28,9 +31,9 @@ const UserProfile = ({ user, userMatches, getUserMatches }) => {
     }
 
     return (
-        <section className={userProfile}>
+        <section className={!editMode ? userProfile : userProfileEdit}>
             <header>
-                { editMode ? <UserProfileEdit user={user} /> :
+                { editMode ? <UserProfileEdit user={user} handleToggleEditVisibility={setEditMode} /> :
                     (
                     <>
                         <Avatar size="large" />
@@ -42,8 +45,8 @@ const UserProfile = ({ user, userMatches, getUserMatches }) => {
                             <p className={userLocation}>Location: <span>{user.location}</span></p>
                             <p>{user.summary}</p>
                             <div>
-                                <a href={user.website}><i className="lni lni-world"></i></a>
-                                <a href={user.linkedIn}><i className="lni lni-linkedin-original"></i></a>
+                                <a href={user.website} target="_blank" rel="noreferrer"><i className="lni lni-world"></i></a>
+                                <a href={user.linkedin} target="_blank" rel="noreferrer"><i className="lni lni-linkedin-original" rel="noreferrer"></i></a>
                             </div>
                         </div>
                         <Button text="Edit Profile" onClickHandler={() => setEditMode(true)} />
@@ -51,7 +54,7 @@ const UserProfile = ({ user, userMatches, getUserMatches }) => {
                     )
                 }   
             </header>
-            { !dataLoading && userMatches ? <UserMatches users={userMatches} /> : null }
+            { !dataLoading && userMatches ? <UserMatches users={userMatches}/> : null }
         </section>
     )
 }
