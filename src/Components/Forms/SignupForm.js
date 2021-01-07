@@ -98,7 +98,6 @@ const SignupForm = ({ signUp, getExpertiseList, expertiseList }) => {
 
     return (
             <>
-                <button style={{marginTop: '150px'}} onClick={()=>fakeIt()}>CLICK ME</button>
                 {
                     formIsSubmitted ? <Redirect to={'/signin'} /> : (
                         <Formik
